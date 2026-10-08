@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Doppelslug banner</title>
+<style>
+	html, body { margin: 0; padding: 0; }
+	.banner {
+		position: relative;
+		width: 1544px;
+		height: 500px;
+		overflow: hidden;
+		background: radial-gradient(circle at 78% 40%, #1f4e86 0, #12263f 55%, #0c1a2c 100%);
+		font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+		color: #fff;
+	}
+	.copy { position: absolute; left: 96px; top: 118px; width: 640px; }
+	.name { font-size: 104px; font-weight: 700; letter-spacing: -2px; line-height: 1; }
+	.tagline { margin-top: 28px; font-size: 36px; line-height: 1.3; color: #c8d8ea; }
+	.bar {
+		position: absolute; left: 880px; top: 92px; width: 560px; height: 76px;
+		border-radius: 38px; background: #fff; color: #1e1e1e;
+		display: flex; align-items: center; padding: 0 34px; box-sizing: border-box;
+		font-size: 32px; box-shadow: 0 18px 40px rgba(0, 0, 0, .35);
+	}
+	.bar .host { color: #8a94a6; }
+	.bar .caret { display: inline-block; width: 3px; height: 38px; margin-left: 4px; background: #2271b1; }
+	.card {
+		position: absolute; top: 352px; width: 300px; height: 70px; border-radius: 14px;
+		display: flex; align-items: center; justify-content: center;
+		font-size: 28px; font-family: Consolas, "SFMono-Regular", Menlo, monospace;
+		box-shadow: 0 12px 30px rgba(0, 0, 0, .3);
+	}
+	.card b { font-weight: 700; }
+	.left { left: 840px; background: #ffffff; color: #1e1e1e; }
+	.right { left: 1180px; background: #f0b849; color: #1e1e1e; }
+	.badge {
+		position: absolute; left: 1124px; top: 236px; width: 72px; height: 72px; border-radius: 50%;
+		background: #f0b849; color: #1e1e1e; font-size: 46px; font-weight: 700;
+		display: flex; align-items: center; justify-content: center;
+		box-shadow: 0 0 0 10px rgba(240, 184, 73, .18);
+	}
+	svg.fork { position: absolute; left: 0; top: 0; }
+</style>
+</head>
+<body>
+<div class="banner">
+	<svg class="fork" width="1544" height="500" viewBox="0 0 1544 500" fill="none" stroke-linecap="round" stroke-width="10">
+		<path d="M1160 168 V230" stroke="#ffffff" stroke-opacity=".85"/>
+		<path d="M1160 300 C1160 330 990 320 990 352" stroke="#ffffff" stroke-opacity=".85"/>
+		<path d="M1160 300 C1160 330 1330 320 1330 352" stroke="#f0b849"/>
+	</svg>
+	<div class="copy">
+		<div class="name">Doppelslug</div>
+		<div class="tagline">Catch lookalike URLs before your visitors land on the wrong post.</div>
+	</div>
+	<div class="bar"><span class="host">example.com/</span>how-write-b<span class="caret"></span></div>
+	<div class="badge">?</div>
+	<div class="card left">how-write-b<b>ook</b></div>
+	<div class="card right">how-write-b<b>log</b></div>
+</div>
+</body>
+</html>

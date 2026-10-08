@@ -1,0 +1,52 @@
+name: Bug report
+description: Something doesn't work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for reporting. For security problems, please follow SECURITY.md instead of opening an issue.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Include the slugs involved, what you expected, and what you saw.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Publish a post with the slug …
+        2. Edit a draft with the slug …
+        3. …
+    validations:
+      required: true
+  - type: dropdown
+    id: editor
+    attributes:
+      label: Editor
+      options:
+        - Block editor
+        - Classic Editor
+        - Both
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      placeholder: Doppelslug 1.0.0, WordPress 7.1, PHP 8.3
+    validations:
+      required: true
+  - type: input
+    id: permalinks
+    attributes:
+      label: Permalink structure
+      description: From Settings → Permalinks.
+      placeholder: /%postname%/
+  - type: input
+    id: language
+    attributes:
+      label: Site language
+      placeholder: English, فارسی, …

@@ -1,0 +1,35 @@
+/* Doppelslug: lookalike URL report in the block editor panels and the Classic Editor box. */
+
+/* The Classic Editor box stays hidden until there is a lookalike to warn about. */
+#doppelslug.doppelslug-quiet {
+	display: none;
+}
+
+.doppelslug-summary {
+	font-weight: 600;
+}
+
+.doppelslug-group {
+	margin: 0 0 12px;
+	padding-inline-start: 8px;
+	border-inline-start: 3px solid #dba617;
+}
+
+.doppelslug-group p {
+	margin: 0 0 4px;
+}
+
+.doppelslug-group ul {
+	margin: 0 0 4px;
+	margin-inline-start: 1.2em;
+	list-style: disc;
+}
+
+.doppelslug-group li {
+	margin-bottom: 2px;
+	word-break: break-word;
+}
+
+.doppelslug-note {
+	color: #646970;
+}

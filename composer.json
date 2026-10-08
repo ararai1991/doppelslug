@@ -1,0 +1,27 @@
+{
+	"name": "ararai1991/doppelslug",
+	"description": "Development tooling for the Doppelslug WordPress plugin.",
+	"type": "project",
+	"license": "GPL-2.0-or-later",
+	"require-dev": {
+		"wp-coding-standards/wpcs": "^3.1",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"wp-cli/i18n-command": "^2.6"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
+	"scripts": {
+		"lint": "phpcs",
+		"fix": "phpcbf",
+		"i18n": [
+			"wp i18n make-pot doppelslug doppelslug/languages/doppelslug.pot --slug=doppelslug --domain=doppelslug --exclude=languages",
+			"wp i18n update-po doppelslug/languages/doppelslug.pot doppelslug/languages",
+			"wp i18n make-mo doppelslug/languages",
+			"wp i18n make-json doppelslug/languages"
+		]
+	}
+}

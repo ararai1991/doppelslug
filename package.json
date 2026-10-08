@@ -1,0 +1,12 @@
+{
+	"name": "doppelslug-dev",
+	"private": true,
+	"description": "Development tooling for the Doppelslug WordPress plugin.",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"test:browser": "node tests/browser-check.mjs"
+	},
+	"devDependencies": {
+		"playwright-core": "1.55.0"
+	}
+}
