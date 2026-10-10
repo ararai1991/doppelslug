@@ -78,7 +78,7 @@ Yes. Slugs are compared character by character after decoding, so Persian, Arabi
 
 = Which languages does it speak? =
 
-English and Persian (فارسی) are built in. The plugin follows the site language, or your own profile language if you set one; any other language shows English. Translations into more languages are welcome on translate.wordpress.org.
+The plugin is written in English and fully translatable, right-to-left languages included. Translations come from translate.wordpress.org, where a Persian (فارسی) translation is provided; WordPress installs them automatically for your site or profile language. Languages without a translation show English.
 
 = Who sees the warnings? =
 

@@ -66,18 +66,18 @@ final class Doppelslug_Detector {
 			return 'plain';
 		}
 
-		// Ask the core filters, so guessing that a theme or another plugin switched off is respected too.
-		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Reading a core filter.
-		if ( false === apply_filters( 'do_redirect_guess_404_permalink', true ) ) {
+		$mode = Doppelslug_Settings::get( 'guessing' );
+
+		if ( 'off' === $mode || 'exact' === $mode ) {
 			return 'off';
 		}
 
-		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Reading a core filter.
-		if ( apply_filters( 'strict_redirect_guess_404_permalink', false ) ) {
+		// A theme or another plugin may have switched guessing off the usual way.
+		if ( has_filter( 'do_redirect_guess_404_permalink', '__return_false' ) || has_filter( 'strict_redirect_guess_404_permalink', '__return_true' ) ) {
 			return 'off';
 		}
 
-		return 'unique' === Doppelslug_Settings::get( 'guessing' ) ? 'unique' : 'default';
+		return 'unique' === $mode ? 'unique' : 'default';
 	}
 
 	/**
@@ -251,17 +251,17 @@ final class Doppelslug_Detector {
 			return 0;
 		}
 
-		$sql = $wpdb->prepare(
-			"SELECT ID FROM {$wpdb->posts} WHERE post_name LIKE %s AND post_type IN (" . implode( ', ', array_fill( 0, count( $types ), '%s' ) ) . ') AND post_status IN (' . implode( ', ', array_fill( 0, count( $statuses ), '%s' ) ) . ')',
-			array_merge( array( $wpdb->esc_like( $address ) . '%' ), $types, $statuses )
-		);
-
-		$cache_key = 'guess:' . md5( $sql ) . ':' . wp_cache_get_last_changed( 'posts' );
+		$cache_key = 'guess:' . md5( (string) wp_json_encode( array( $address, $types, $statuses ) ) ) . ':' . wp_cache_get_last_changed( 'posts' );
 		$post_id   = wp_cache_get( $cache_key, self::CACHE_GROUP );
 
 		if ( false === $post_id ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared -- Prepared above; core's guess has no API equivalent.
-			$post_id = (int) $wpdb->get_var( $sql );
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Core's guess has no API equivalent; the result is cached.
+			$post_id = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT ID FROM {$wpdb->posts} WHERE post_name LIKE %s AND post_type IN (" . implode( ', ', array_fill( 0, count( $types ), '%s' ) ) . ') AND post_status IN (' . implode( ', ', array_fill( 0, count( $statuses ), '%s' ) ) . ')',
+					array_merge( array( $wpdb->esc_like( $address ) . '%' ), $types, $statuses )
+				)
+			);
 			wp_cache_set( $cache_key, $post_id, self::CACHE_GROUP, HOUR_IN_SECONDS );
 		}
 
@@ -336,31 +336,33 @@ final class Doppelslug_Detector {
 			return array();
 		}
 
-		$sql = $wpdb->prepare(
-			"SELECT ID, post_name FROM {$wpdb->posts}
-			WHERE post_name LIKE %s
-			AND post_type IN (" . implode( ', ', array_fill( 0, count( $types ), '%s' ) ) . ')
-			AND post_status IN (' . implode( ', ', array_fill( 0, count( $statuses ), '%s' ) ) . ')
-			AND ID <> %d
-			AND ( 0 = %d OR YEAR( post_date ) = %d )
-			AND ( 0 = %d OR MONTH( post_date ) = %d )
-			AND ( 0 = %d OR DAYOFMONTH( post_date ) = %d )
-			ORDER BY post_name, ID
-			LIMIT %d',
-			array_merge(
-				array( $wpdb->esc_like( $address ) . '%' ),
-				$types,
-				$statuses,
-				array( absint( $args['exclude_id'] ), $year, $year, $month, $month, $day, $day, max( 1, absint( $args['limit'] ) ) )
-			)
+		$values = array_merge(
+			array( $wpdb->esc_like( $address ) . '%' ),
+			$types,
+			$statuses,
+			array( absint( $args['exclude_id'] ), $year, $year, $month, $month, $day, $day, max( 1, absint( $args['limit'] ) ) )
 		);
 
-		$cache_key = 'find:' . md5( $sql ) . ':' . wp_cache_get_last_changed( 'posts' );
+		$cache_key = 'find:' . md5( (string) wp_json_encode( $values ) ) . ':' . wp_cache_get_last_changed( 'posts' );
 		$rows      = wp_cache_get( $cache_key, self::CACHE_GROUP );
 
 		if ( false === $rows ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared -- Prepared above; WP_Query cannot match the start of a slug.
-			$rows = (array) $wpdb->get_results( $sql );
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- WP_Query cannot match the start of a slug; the result is cached.
+			$rows = (array) $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT ID, post_name FROM {$wpdb->posts}
+					WHERE post_name LIKE %s
+					AND post_type IN (" . implode( ', ', array_fill( 0, count( $types ), '%s' ) ) . ')
+					AND post_status IN (' . implode( ', ', array_fill( 0, count( $statuses ), '%s' ) ) . ')
+					AND ID <> %d
+					AND ( 0 = %d OR YEAR( post_date ) = %d )
+					AND ( 0 = %d OR MONTH( post_date ) = %d )
+					AND ( 0 = %d OR DAYOFMONTH( post_date ) = %d )
+					ORDER BY post_name, ID
+					LIMIT %d',
+					$values
+				)
+			);
 			wp_cache_set( $cache_key, $rows, self::CACHE_GROUP, HOUR_IN_SECONDS );
 		}
 

@@ -137,6 +137,12 @@ switch ( $action ) {
 		$ids['block']     = ds_post( 'my-pattern', 'My pattern', 'publish', 'wp_block' );
 		$ids['tags']      = ds_post( 'title-with-tags', 'Book <em>&amp;</em> "quotes"' );
 
+		// Install the Persian translation where a translate.wordpress.org language pack would go.
+		wp_mkdir_p( WP_LANG_DIR . '/plugins' );
+		foreach ( (array) glob( __DIR__ . '/languages/doppelslug-*' ) as $file ) {
+			copy( $file, WP_LANG_DIR . '/plugins/' . basename( $file ) );
+		}
+
 		update_option( 'doppelslug_test_ids', $ids );
 		delete_option( 'doppelslug_settings' );
 		echo wp_json_encode( $ids, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
@@ -351,8 +357,37 @@ switch ( $action ) {
 		break;
 
 	case 'user_locale':
-		update_user_meta( 1, 'locale', 'en_US' === $_GET['value'] ? '' : sanitize_key( $_GET['value'] ) );
+		// Exact codes only: locales are case-sensitive (fa_IR), so sanitize_key() would break them.
+		$value = in_array( $_GET['value'], array( 'fa_IR', 'de_DE' ), true ) ? $_GET['value'] : '';
+		update_user_meta( 1, 'locale', $value );
 		echo 'locale=' . get_user_locale( 1 );
+		break;
+
+	case 'mu_debug':
+		$mu = WP_CONTENT_DIR . '/mu-plugins/doppelslug-debug.php';
+		if ( 'off' === ( $_GET['state'] ?? '' ) ) {
+			wp_delete_file( $mu );
+			echo 'removed';
+			break;
+		}
+		wp_mkdir_p( dirname( $mu ) );
+		file_put_contents(
+			$mu,
+			'<?php add_action( "admin_footer", function () { global $wp_textdomain_registry; $l = determine_locale(); echo "<!-- DSDEBUG " . wp_json_encode( array( "locale" => $l, "loaded" => is_textdomain_loaded( "doppelslug" ), "path" => $wp_textdomain_registry->get( "doppelslug", $l ), "files" => array_map( "basename", $wp_textdomain_registry->get_language_files_from_path( WP_LANG_DIR . "/plugins/" ) ), "plugin" => __( "Warning sensitivity", "doppelslug" ), "core" => __( "Settings" ) ), JSON_UNESCAPED_UNICODE ) . " -->"; } );'
+		);
+		echo 'installed';
+		break;
+
+	case 'locale':
+		echo wp_json_encode(
+			array(
+				'WPLANG'           => get_option( 'WPLANG' ),
+				'site_locale'      => get_locale(),
+				'admin_locale'     => get_user_meta( 1, 'locale', true ),
+				'installed'        => get_available_languages(),
+				'doppelslug_packs' => array_map( 'basename', (array) glob( WP_LANG_DIR . '/plugins/doppelslug-*' ) ),
+			)
+		);
 		break;
 
 	case 'versions':

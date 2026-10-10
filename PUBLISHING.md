@@ -6,7 +6,7 @@
    - `doppelslug/doppelslug.php`: the `Version:` header and `DOPPELSLUG_VERSION`
    - `doppelslug/readme.txt`: `Stable tag:` and a new `== Changelog ==` entry
 2. Keep `Tested up to:` in `readme.txt` at the current WordPress major version.
-3. If you changed or added any text, run `composer i18n` and translate the new strings in `doppelslug/languages/doppelslug-fa_IR.po`, then run `composer i18n` again.
+3. If you changed or added any text, run `composer i18n`, translate the new strings in `languages/doppelslug-fa_IR.po`, and import that file at translate.wordpress.org (see below).
 4. Run the checks (see README.md): `composer lint`, `bash tests/run-playground-tests.sh`, `node tests/browser-check.mjs`, `python tests/plugin-check.py`.
 5. Build the ZIP: `python bin/build-zip.py` → `dist/doppelslug-<version>.zip`.
 
@@ -44,3 +44,12 @@ svn ci -m "Release 1.0.0" --username YOUR_WPORG_USERNAME
 ## Later releases
 
 Copy the new `doppelslug/` contents over `trunk/`, `svn add` any new files, `svn rm` deleted ones, then `svn cp trunk tags/<version>` and commit. The `Stable tag` in `trunk/readme.txt` tells WordPress.org which tag to ship.
+
+## Persian translation on translate.wordpress.org
+
+The plugin ships no translation files; WordPress.org delivers them as language packs. After approval:
+
+1. Open https://translate.wordpress.org/locale/fa/default/wp-plugins/doppelslug/ and choose the **Stable (latest release)** project.
+2. Use **Import Translations** to upload `languages/doppelslug-fa_IR.po`. The strings arrive as suggestions until a Persian translation editor approves them.
+3. To approve them yourself, request Project Translation Editor (PTE) rights for Doppelslug in Persian on the Polyglots blog: https://make.wordpress.org/polyglots/ (plugin authors may ask for PTE rights for their own plugin).
+4. Once 90% of the strings are approved, WordPress.org builds the Persian language pack and Persian sites receive it with their regular translation updates.

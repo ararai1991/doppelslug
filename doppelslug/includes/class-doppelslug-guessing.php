@@ -57,9 +57,8 @@ final class Doppelslug_Guessing {
 			return $pre;
 		}
 
-		// Leave exact-match guessing, if something else switched it on, to WordPress.
-		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Reading a core filter.
-		if ( apply_filters( 'strict_redirect_guess_404_permalink', false ) ) {
+		// Leave exact-match guessing to WordPress if a theme or another plugin switched it on the usual way.
+		if ( has_filter( 'strict_redirect_guess_404_permalink', '__return_true' ) ) {
 			return $pre;
 		}
 

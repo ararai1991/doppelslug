@@ -141,7 +141,8 @@ try {
 	if ( await faWelcome.isVisible() ) {
 		await page.keyboard.press( 'Escape' );
 	}
-	check( 'persian: notice uses the PHP and JavaScript translations', ( await faNotice.innerText() ).includes( 'نشانی' ) );
+	const faNoticeText = await faNotice.innerText();
+	check( 'persian: notice uses the PHP and JavaScript translations', faNoticeText.includes( 'مورد منتشرشده' ) && faNoticeText.includes( 'کوتاه‌شده' ), faNoticeText );
 	await faNotice.getByRole( 'button', { name: 'نمایش جزئیات' } ).click();
 	const faPanel = page.locator( '.doppelslug-panel' ).first();
 	await faPanel.locator( '.doppelslug-group' ).waitFor( { timeout: 10000 } );

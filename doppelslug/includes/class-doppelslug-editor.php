@@ -39,7 +39,7 @@ final class Doppelslug_Editor {
 			DOPPELSLUG_VERSION,
 			true
 		);
-		wp_set_script_translations( 'doppelslug-block-editor', 'doppelslug', DOPPELSLUG_DIR . 'languages' );
+		wp_set_script_translations( 'doppelslug-block-editor', 'doppelslug' );
 
 		wp_enqueue_style( 'doppelslug-editor', plugins_url( 'assets/css/editor.css', DOPPELSLUG_FILE ), array(), DOPPELSLUG_VERSION );
 	}
@@ -67,7 +67,7 @@ final class Doppelslug_Editor {
 			DOPPELSLUG_VERSION,
 			true
 		);
-		wp_set_script_translations( 'doppelslug-classic-editor', 'doppelslug', DOPPELSLUG_DIR . 'languages' );
+		wp_set_script_translations( 'doppelslug-classic-editor', 'doppelslug' );
 
 		wp_enqueue_style( 'doppelslug-editor', plugins_url( 'assets/css/editor.css', DOPPELSLUG_FILE ), array(), DOPPELSLUG_VERSION );
 	}

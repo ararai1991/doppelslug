@@ -11,7 +11,6 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       doppelslug
- * Domain Path:       /languages
  *
  * @package Doppelslug
  */
@@ -30,20 +29,8 @@ require_once DOPPELSLUG_DIR . 'includes/class-doppelslug-rest.php';
 
 register_activation_hook( __FILE__, array( 'Doppelslug_Settings', 'activate' ) );
 
-add_action( 'init', 'doppelslug_load_textdomain' );
-
 Doppelslug_Guessing::register();
 Doppelslug_Rest::register();
-
-/**
- * Loads the bundled translations (Persian ships with the plugin; other languages fall back to English).
- *
- * Language packs from translate.wordpress.org, when they exist, still take priority over these files.
- */
-function doppelslug_load_textdomain() {
-	// phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- Needed for the translations bundled in /languages.
-	load_plugin_textdomain( 'doppelslug', false, dirname( plugin_basename( DOPPELSLUG_FILE ) ) . '/languages' );
-}
 
 if ( is_admin() ) {
 	require_once DOPPELSLUG_DIR . 'includes/class-doppelslug-editor.php';

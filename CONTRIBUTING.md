@@ -24,13 +24,14 @@ The JavaScript has no build step on purpose: edit `doppelslug/assets/js/*.js` di
 
 ## Text and translations
 
-Every user-facing string uses the `doppelslug` text domain. After changing or adding text:
+Every user-facing string uses the `doppelslug` text domain. The plugin ships no translation files: WordPress.org builds language packs from [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/doppelslug/) and installs them on sites automatically.
 
-1. Run `composer i18n` to regenerate `doppelslug/languages/doppelslug.pot`.
-2. Translate the new strings in `doppelslug/languages/doppelslug-fa_IR.po` (Persian uses «» quotes and half-spaces).
-3. Run `composer i18n` again to rebuild the `.mo` and JavaScript `.json` files.
+The repository keeps the source files in `languages/`: the template `doppelslug.pot` and the Persian translation `doppelslug-fa_IR.po` (Persian uses «» quotes and half-spaces). After changing or adding text:
 
-Once the plugin is on WordPress.org, translations into other languages are best added at [translate.wordpress.org](https://translate.wordpress.org/).
+1. Run `composer i18n` to regenerate the template and merge it into the Persian file.
+2. Translate the new strings in `languages/doppelslug-fa_IR.po`, then import it into the Persian project on translate.wordpress.org.
+
+Translations into other languages are welcome directly on translate.wordpress.org.
 
 ## License
 

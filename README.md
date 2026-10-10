@@ -36,7 +36,7 @@ example.com/how-write-blog
 - **Clear warnings:** each one shows the address visitors could type, the posts it could open, and where it leads right now, worked out with the same SQL WordPress itself runs.
 - **Optional fix** under *Settings → Doppelslug*: keep WordPress's behaviour (the default), redirect only when one post matches, redirect only exact slug matches, or never redirect.
 - **Adjustable sensitivity:** warn when slugs share their first word, at least half the slug (default), or everything but the last word.
-- **English and Persian (فارسی)**, right-to-left included. It follows the site or profile language; other languages fall back to English.
+- **Translatable**, right-to-left included. A Persian (فارسی) translation is maintained in [`languages/`](languages) and delivered through translate.wordpress.org; languages without a translation fall back to English.
 - **Light:** no custom tables, no tracking, no external requests. On the front end it only runs on Not Found requests.
 
 ## Screenshots
@@ -73,12 +73,13 @@ doppelslug/          The plugin. Only this folder is shipped.
 tests/               Integration, browser and Plugin Check scripts (WordPress Playground)
 bin/                 Release ZIP builder and listing-asset renderer
 .wordpress-org/      Banner, icon and screenshots for the WordPress.org listing
+languages/           Translation template and the Persian translation (for translate.wordpress.org)
 ```
 
 ```bash
 composer install     # WordPress Coding Standards, PHPCompatibility, WP-CLI i18n
 composer lint        # phpcs on doppelslug/
-composer i18n        # regenerate the POT and rebuild the Persian .mo and JavaScript .json files
+composer i18n        # regenerate languages/doppelslug.pot and merge it into the Persian .po
 npm install          # playwright-core for the browser checks (uses your installed Edge or Chrome)
 ```
 
@@ -95,6 +96,7 @@ Then run the checks:
 
 ```bash
 bash tests/run-playground-tests.sh   # REST checks, permissions, every redirect mode, languages, uninstall, PHP notices
+                                     # (installs the Persian translation as a language pack first)
 node tests/browser-check.mjs         # both editors in a real browser, in English and Persian
 python tests/plugin-check.py         # the official Plugin Check, through its admin AJAX API
 ```

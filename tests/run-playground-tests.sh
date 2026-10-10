@@ -33,6 +33,19 @@ expect() {
 	fi
 }
 
+# Playground answers requests before its blueprint finishes; wait until the language steps are done.
+for _ in $(seq 1 100); do
+	state="$(run locale)"
+	case "$state" in *'"WPLANG":""'*'"de_DE","fa_IR"'*) break ;; esac
+	sleep 3
+done
+
+# Build the Persian .mo/.json that setup installs as a language pack.
+if [ -x vendor/bin/wp ]; then
+	vendor/bin/wp i18n make-mo languages tests/playground/languages >/dev/null
+	vendor/bin/wp i18n make-json languages tests/playground/languages >/dev/null
+fi
+
 echo "== Setup"
 run setup >/dev/null && echo "fixtures created"
 
