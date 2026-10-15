@@ -3,6 +3,8 @@
 </p>
 
 <p align="center">
+  <a href="https://wordpress.org/plugins/doppelslug/"><img alt="WordPress.org version" src="https://img.shields.io/wordpress/plugin/v/doppelslug?label=WordPress.org&logo=wordpress&logoColor=white"></a>
+  <a href="https://wordpress.org/plugins/doppelslug/"><img alt="Active installs" src="https://img.shields.io/wordpress/plugin/installs/doppelslug"></a>
   <a href="LICENSE"><img alt="License: GPL v2 or later" src="https://img.shields.io/badge/license-GPLv2%2B-blue.svg"></a>
   <img alt="Requires WordPress 6.6+" src="https://img.shields.io/badge/WordPress-6.6%2B-21759B?logo=wordpress&logoColor=white">
   <img alt="Tested up to WordPress 7.1" src="https://img.shields.io/badge/tested%20up%20to-7.1-21759B">
@@ -49,9 +51,10 @@ example.com/how-write-blog
 
 ## Installation
 
-1. Download the latest ZIP from [Releases](https://github.com/ararai1991/doppelslug/releases), or build one with `python bin/build-zip.py`.
-2. In WordPress, go to *Plugins → Add New → Upload Plugin*, choose the ZIP, then activate it.
-3. Edit any post or page. A warning appears when its slug starts like another published one.
+1. In WordPress, go to *Plugins → Add New*, search for **Doppelslug**, then install and activate it. It is listed at [wordpress.org/plugins/doppelslug](https://wordpress.org/plugins/doppelslug/).
+2. Edit any post or page. A warning appears when its slug starts like another published one.
+
+You can also download a ZIP from [Releases](https://github.com/ararai1991/doppelslug/releases) and upload it under *Plugins → Add New → Upload Plugin*.
 
 Requires WordPress 6.6+ and PHP 7.4+. Works with posts, pages, and public custom post types, including non-Latin slugs (Persian, Arabic, Cyrillic, …). WordPress only completes partial addresses when pretty permalinks are on, so with plain permalinks the plugin stays quiet.
 
